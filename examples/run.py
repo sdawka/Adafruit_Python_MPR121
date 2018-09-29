@@ -1,8 +1,8 @@
-import pygame
+# import pygame
 import time, threading
 import RPi.GPIO as GPIO
-import smbus
-bus = smbus.SMBus(1) # Pi 2
+# import smbus
+# bus = smbus.SMBus(1) # Pi 2
 
 # MPR121 Register Defines
 MHD_R = 0x2B
@@ -54,7 +54,7 @@ ATO_CFGT = 0x7F
 
 # Global Constants
 
-TOU_THRESH = 02
+TOU_THRESH = 02 #06
 REL_THRESH = 12
 
 # Routines
@@ -134,26 +134,26 @@ def setup(address):
 	bus.write_byte_data(address, ELE_CFG, 0x0C)  # Enables all 12 Electrodes	
 
 #---- main -----#
-TOU_THRESH = 10
-REL_THRESH = 20
+TOU_THRESH = 5 #10
+REL_THRESH = 15 #20
 setup(0x5a)
 last_touched = readData(0x5a)
 
-# Use pygame for sounds
-pygame.mixer.pre_init(44100, -16, 12, 512)
-pygame.init()
-pygame.mixer.music.set_volume(1.0)
+# # Use pygame for sounds
+# pygame.mixer.pre_init(44100, -16, 12, 512)
+# pygame.init()
+# pygame.mixer.music.set_volume(1.0)
 
-soundsList = [
- ## Record and list here
-]
+# soundsList = [
+#  ## Record and list here
+# ]
 
-sounds = [0,0,0,0,0,0,0,0,0,0,0,0]
-key = 0
-for  sound in soundsList:
-  sounds[key] = pygame.mixer.Sound(sound)
-  sounds[key].set_volume(1)
-  key += 1
+# sounds = [0,0,0,0,0,0,0,0,0,0,0,0]
+# key = 0
+# for  sound in soundsList:
+#   sounds[key] = pygame.mixer.Sound(sound)
+#   sounds[key].set_volume(1)
+#   key += 1
 
 print "Press Ctrl C to end"
 
@@ -165,13 +165,13 @@ while True:
     pin_bit = 1 << i
     if currentTap & pin_bit and not lastTap & pin_bit:
       print "Touched: " + str(i)
-      t = threading.Thread(target=playSound, args=(i,))
-      t.start()      
+    #   t = threading.Thread(target=playSound, args=(i,))
+    #   t.start()      
     if not currentTap & pin_bit and lastTap & pin_bit:
       print "Released: " + str(i)
   lastTap = currentTap
   time.sleep(0.1)
 
-  def playSound(i):
-    if (sounds[i]):
-      sounds[i].play()
+#   def playSound(i):
+#     if (sounds[i]):
+#       sounds[i].play()
